@@ -2,6 +2,7 @@ __author__ = 'abc'
 
 from candle_trend import checkDown
 from candle_reverse import checkChuizi, checkShangdiao, checkTunmoRaise, checkTunmoDrop, checkWuYunGaiDing, checkCiTou
+from candle_star import checkQiMing, checkHuangHun, checkLiuXing
 
 with open('gold.csv') as f:
     valList = []
@@ -31,6 +32,7 @@ with open('gold.csv') as f:
             #         print '%s\tChuizi!!!' % (valListRev[i+3]['date'])
             #         for each in valListRev[i:i+3]:
             #             print '%s - %f' % (each['date'], each['close'])
+
             ret =checkTunmoDrop('up', valListRev[i:i+2])
             if ret == True:
                 print '%s\tTunmo Drop' % (valListRev[i]['date'])
@@ -44,6 +46,16 @@ with open('gold.csv') as f:
             ret =checkCiTou('down', valListRev[i:i+2])
             if ret == True:
                 print '+++ %s\tCiTou' % (valListRev[i]['date'])
+
+            ret =checkQiMing('down', valListRev[i:i+3])
+            if ret == True:
+                print '+++ %s\tQiMing' % (valListRev[i]['date'])
+            ret =checkHuangHun('up', valListRev[i:i+3])
+            if ret == True:
+                print '%s\tHuangHun' % (valListRev[i]['date'])
+            ret =checkLiuXing(valListRev[i:i+1])
+            if ret == True:
+                print '+++ %s\tLiuXing' % (valListRev[i]['date'])
 
         except Exception, e:
             print '%d, %s' % (i, e)
