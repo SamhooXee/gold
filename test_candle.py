@@ -1,12 +1,13 @@
 from candle_reverse import checkChuizi, checkShangdiao, checkTunmoRaise, checkTunmoDrop, checkWuYunGaiDing, checkCiTou
+from candle_reverse2 import checkYunXian
 from candle_star import checkQiMing, checkHuangHun, checkLiuXing
-from candle_trend import checkDown
+from candle_trend import checkDown, raiseCount, dropCount
 
 __author__ = 'abc'
 
 import unittest
 
-class TestCaseReverse(unittest.TestCase):
+class TestCase02Reverse(unittest.TestCase):
     def test_checkChuizi1(self):
         valMap = {'open': 100, 'close': 90, 'top': 100, 'down': 10}
         ret = checkChuizi('down', valMap)
@@ -46,7 +47,7 @@ class TestCaseReverse(unittest.TestCase):
         ret = checkCiTou('down', valList)
         self.assertEqual(True, ret)
 
-class TestCaseTrend(unittest.TestCase):
+class TestCase01Trend(unittest.TestCase):
     def test_checkTrend1(self):
         valList = [{'open': 100, 'close': 90, 'top': 100, 'down': 10},
                     {'open': 100, 'close': 80, 'top': 100, 'down': 10},
@@ -61,7 +62,28 @@ class TestCaseTrend(unittest.TestCase):
         ret = checkDown(valList)
         self.assertEqual(False, ret)
 
-class TestCaseStar(unittest.TestCase):
+    def test_raiseCount(self):
+        valList = [{'open': 20, 'close': 30, 'top': 100, 'down': 10},
+                    {'open': 30, 'close': 40, 'top': 100, 'down': 10},
+                    {'open': 40, 'close': 50, 'top': 100, 'down': 10}]
+        ret = raiseCount(valList)
+        self.assertEqual(3, ret)
+
+    def test_dropCount(self):
+        valList = [{'open': 50, 'close': 40, 'top': 100, 'down': 10},
+                    {'open': 40, 'close': 30, 'top': 100, 'down': 10},
+                    {'open': 30, 'close': 20, 'top': 100, 'down': 10}]
+        ret = dropCount(valList)
+        self.assertEqual(3, ret)
+
+    def test_dropCount2(self):
+        valList = [{'open': 50, 'close': 40, 'top': 100, 'down': 10},
+                    {'open': 40, 'close': 30, 'top': 100, 'down': 10},
+                    {'open': 50, 'close': 40, 'top': 100, 'down': 10}]
+        ret = dropCount(valList)
+        self.assertEqual(2, ret)
+
+class TestCase03Star(unittest.TestCase):
     def test_checkQiMing(self):
         valList = [{'open': 60, 'close': 40, 'top': 70, 'down': 30},
                     {'open': 20, 'close': 30, 'top': 40, 'down': 10},
@@ -79,6 +101,13 @@ class TestCaseStar(unittest.TestCase):
     def test_checkLiuXing(self):
         valList = [{'open': 20, 'close': 30, 'top': 80, 'down': 17}]
         ret = checkLiuXing(valList)
+        self.assertEqual(True, ret)
+
+class TestCase04Reverse(unittest.TestCase):
+    def test_checkYunXian(self):
+        valList = [{'open': 20, 'close':60, 'top': 70, 'down':10},
+                   {'open': 30, 'close':40, 'top': 50, 'down':20}]
+        ret = checkYunXian(valList)
         self.assertEqual(True, ret)
 
 if __name__ == '__main__':

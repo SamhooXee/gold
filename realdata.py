@@ -1,8 +1,9 @@
 __author__ = 'abc'
 
-from candle_trend import checkDown
 from candle_reverse import checkChuizi, checkShangdiao, checkTunmoRaise, checkTunmoDrop, checkWuYunGaiDing, checkCiTou
+from candle_reverse2 import checkYunXian
 from candle_star import checkQiMing, checkHuangHun, checkLiuXing
+from candle_trend import checkDown, raiseCount, dropCount
 
 with open('gold.csv') as f:
     valList = []
@@ -24,38 +25,47 @@ with open('gold.csv') as f:
     valListRev = valList[::-1]
     for i in range(0, len(valListRev)):
         try:
-            # ret = checkDown(valListRev[i:i+3])
+            retx = checkDown(valListRev[i:i+3])
+            if retx == True:
+                # print valListRev[i]['date']
+                ret = checkChuizi('down', valListRev[i+3])
+                if ret == True:
+                    cnt = raiseCount(valListRev[i+4:])
+                    print '%s\tChuizi!!! - cnt %d' % (valListRev[i+3]['date'], cnt)
+                    # for each in valListRev[i:i+3]:
+                    #     print '%s - %f' % (each['date'], each['close'])
+                # reverse
+                ret = checkTunmoRaise('down', valListRev[i+3:i+5])
+                if ret == True:
+                    cnt = raiseCount(valListRev[i+5:])
+                    print '+++ %s\tTunmo Raise - cnt %d' % (valListRev[i]['date'], cnt)
+                    print valListRev[i:i+2]
+                ret = checkCiTou('down', valListRev[i+3:i+5])
+                if ret == True:
+                    cnt = raiseCount(valListRev[i+5:])
+                    print '+++ %s\tCiTou - cnt %d' % (valListRev[i]['date'], cnt)
+                # star
+                ret = checkQiMing('down', valListRev[i+3:i+6])
+                if ret == True:
+                    cnt = raiseCount(valListRev[i+6:])
+                    print '+++ %s\tQiMing - cnt %d' % (valListRev[i]['date'], cnt)
+                ret = checkLiuXing(valListRev[i+3:i+4])
+                if ret == True:
+                    cnt = raiseCount(valListRev[i+4:])
+                    print '+++ %s\tLiuXing - cnt %d' % (valListRev[i]['date'], cnt)
+
+            # ======================================================
+            # # reverse
+            # ret = checkTunmoDrop('up', valListRev[i:i+2])
             # if ret == True:
-            #     # print valListRev[i]['date']
-            #     ret2 = checkChuizi('down', valListRev[i+3])
-            #     if ret2 == True:
-            #         print '%s\tChuizi!!!' % (valListRev[i+3]['date'])
-            #         for each in valListRev[i:i+3]:
-            #             print '%s - %f' % (each['date'], each['close'])
-
-            ret =checkTunmoDrop('up', valListRev[i:i+2])
-            if ret == True:
-                print '%s\tTunmo Drop' % (valListRev[i]['date'])
-            ret =checkTunmoRaise('down', valListRev[i:i+2])
-            if ret == True:
-                print '+++ %s\tTunmo Raise' % (valListRev[i]['date'])
-                print valListRev[i:i+2]
-            ret =checkWuYunGaiDing('up', valListRev[i:i+2])
-            if ret == True:
-                print '%s\tWuYunGaiDing' % (valListRev[i]['date'])
-            ret =checkCiTou('down', valListRev[i:i+2])
-            if ret == True:
-                print '+++ %s\tCiTou' % (valListRev[i]['date'])
-
-            ret =checkQiMing('down', valListRev[i:i+3])
-            if ret == True:
-                print '+++ %s\tQiMing' % (valListRev[i]['date'])
-            ret =checkHuangHun('up', valListRev[i:i+3])
-            if ret == True:
-                print '%s\tHuangHun' % (valListRev[i]['date'])
-            ret =checkLiuXing(valListRev[i:i+1])
-            if ret == True:
-                print '+++ %s\tLiuXing' % (valListRev[i]['date'])
+            #     print '%s\tTunmo Drop' % (valListRev[i]['date'])
+            # ret =checkWuYunGaiDing('up', valListRev[i:i+2])
+            # if ret == True:
+            #     print '%s\tWuYunGaiDing' % (valListRev[i]['date'])
+            # # star
+            # ret =checkHuangHun('up', valListRev[i:i+3])
+            # if ret == True:
+            #     print '%s\tHuangHun' % (valListRev[i]['date'])
 
         except Exception, e:
             print '%d, %s' % (i, e)
